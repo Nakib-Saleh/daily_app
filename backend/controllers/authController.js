@@ -12,14 +12,14 @@ const setTokenCookies = (res, accessToken, refreshToken) => {
     res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: isProduction, 
-        sameSite: 'Lax',   
+        sameSite: isProduction ? 'None' : 'Lax',   
         maxAge: 15 * 60 * 1000 // 15 minutes
     });
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: isProduction,
-        sameSite: 'Lax',
+        sameSite: isProduction ? 'None' : 'Lax',
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 };
@@ -278,13 +278,13 @@ export const resetPasswordController = async (req, res) => {
         res.cookie('accessToken', result.accessToken, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: 'strict',
+            sameSite: isProduction ? 'None' : 'Strict',
             maxAge: 15 * 60 * 1000
         });
         res.cookie('refreshToken', result.refreshToken, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: 'strict',
+            sameSite: isProduction ? 'None' : 'Strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
