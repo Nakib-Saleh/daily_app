@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { usePopup } from '../providers'
 import '../styles/auth.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
@@ -13,7 +15,7 @@ const ForgotPassword = () => {
         setLoading(true)
 
         try {
-            const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
+            const response = await fetch(`${API_URL}/auth/forgot-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

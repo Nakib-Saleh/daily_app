@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../providers'
 import '../styles/auth.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const Register = () => {
     const navigate = useNavigate()
     const { register, error } = useAuth()
@@ -39,7 +41,7 @@ const Register = () => {
         setUsernameStatus({ checking: true, available: null, message: 'Checking...' })
 
         try {
-            const response = await fetch(`http://localhost:3000/api/auth/check-username/${username}`)
+            const response = await fetch(`${API_URL}/auth/check-username/${username}`)
             const data = await response.json()
 
             setUsernameStatus({

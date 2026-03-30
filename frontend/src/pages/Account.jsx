@@ -5,6 +5,8 @@ import AchievementShowcase from '../components/achievements/AchievementShowcase'
 import MySessions from '../components/account/MySessions'
 import '../styles/auth.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const Account = () => {
     const { user, checkAuth } = useAuth()
     const [isEditing, setIsEditing] = useState(false)
@@ -74,7 +76,7 @@ const Account = () => {
     const checkUsernameAvailability = async (username) => {
         setUsernameStatus('checking')
         try {
-            const res = await fetch(`http://localhost:3000/api/auth/check-username/${username}`)
+            const res = await fetch(`${API_URL}/auth/check-username/${username}`)
             const data = await res.json()
             if (data.available) {
                 setUsernameStatus('available')
@@ -105,7 +107,7 @@ const Account = () => {
                 formDataToSend.append('avatar', avatarFile)
             }
 
-            const res = await fetch('http://localhost:3000/api/auth/profile', {
+            const res = await fetch(`${API_URL}/auth/profile`, {
                 method: 'PUT',
                 body: formDataToSend,
                 credentials: 'include'

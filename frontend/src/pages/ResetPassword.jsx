@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { usePopup } from '../providers'
 import '../styles/auth.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const ResetPassword = () => {
     const { token } = useParams()
     const navigate = useNavigate()
@@ -37,7 +39,7 @@ const ResetPassword = () => {
         setLoading(true)
 
         try {
-            const response = await fetch(`http://localhost:3000/api/auth/reset-password/${token}`, {
+            const response = await fetch(`${API_URL}/auth/reset-password/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

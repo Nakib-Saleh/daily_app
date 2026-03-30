@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const UsersTab = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
@@ -11,7 +13,7 @@ const UsersTab = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/auth/users', {
+            const res = await fetch(`${API_URL}/auth/users`, {
                 credentials: 'include'
             })
             const data = await res.json()
@@ -30,7 +32,7 @@ const UsersTab = () => {
 
     const handleRoleChange = async (userId, newRole) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/auth/users/${userId}/role`, {
+            const res = await fetch(`${API_URL}/auth/users/${userId}/role`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ role: newRole }),
@@ -51,7 +53,7 @@ const UsersTab = () => {
 
     const handleStatusChange = async (userId, newStatus) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/auth/users/${userId}/status`, {
+            const res = await fetch(`${API_URL}/auth/users/${userId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isActive: newStatus }),
