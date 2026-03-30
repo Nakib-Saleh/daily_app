@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, memo } from 'react'
+import { playWarningChime, playTimesUpChime } from '../../utils/audioCues'
 
 
 function formatTime(seconds) {
@@ -60,6 +61,8 @@ const FocusOverlay = ({
     const [videoEnabled, setVideoEnabled] = useState(true)
     const [audioEnabled, setAudioEnabled] = useState(true)
     const quoteIntervalRef = useRef(null)
+    const warningPlayedRef = useRef(false)
+    const timesUpPlayedRef = useRef(false)
 
     const sessionName = session?.name || 'Focus'
     const sessionEmoji = session?.emoji || '🎯'
@@ -103,6 +106,34 @@ const FocusOverlay = ({
             if (quoteIntervalRef.current) clearInterval(quoteIntervalRef.current)
         }
     }, [session?._id, quotes.length])
+
+    // Reset audio cue flags when a new task starts
+    useEffect(() => {
+        warningPlayedRef.current = false
+        timesUpPlayedRef.current = false
+    }, [totalDuration, activeNode?.id])
+
+    // Audio cues: 1-minute warning + time's up
+    useEffect(() => {
+        if (!isRunning || isPaused) return
+
+        // 1-minute warning: play at exactly 60s remaining
+        // Skip for tasks that are 1 minute or shorter
+        if (timeRemaining === 60 && totalDuration > 60 && !warningPlayedRef.current) {
+            warningPlayedRef.current = true
+            if (audioEnabled) {
+                playWarningChime(audioVolume)
+            }
+        }
+
+        // Time's up: play when timer reaches 0
+        if (timeRemaining === 0 && totalDuration > 0 && !timesUpPlayedRef.current) {
+            timesUpPlayedRef.current = true
+            if (audioEnabled) {
+                playTimesUpChime(audioVolume)
+            }
+        }
+    }, [timeRemaining, totalDuration, isRunning, isPaused, audioEnabled, audioVolume])
 
     // Calculate ring progress
     const elapsed = totalDuration - timeRemaining
