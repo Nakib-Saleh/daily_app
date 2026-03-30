@@ -13,7 +13,7 @@ const Sidebar = () => {
         <aside className="dashboard-sidebar">
             <div className="sidebar-header">
                 <h2>Choreography</h2>
-                <span className="version">v1.0</span>
+                <span className="version">v1.1</span>
             </div>
 
             <nav className="sidebar-nav">
